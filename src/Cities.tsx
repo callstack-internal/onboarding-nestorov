@@ -1,3 +1,4 @@
+import {useTheme} from '@react-navigation/native';
 import React, {useCallback, useMemo} from 'react';
 import {
   FlatList,
@@ -5,10 +6,9 @@ import {
   FlatListProps,
   ListRenderItem,
   TouchableOpacity,
-  Alert,
   StyleSheet,
-  useColorScheme,
 } from 'react-native';
+import {StackScreenProps} from './types';
 
 const cities = [
   'London',
@@ -33,28 +33,24 @@ const cities = [
   'Vancouver',
 ];
 
-export default function Cities() {
-  const colorScheme = useColorScheme();
+export default function Cities({navigation}: StackScreenProps<'Cities'>) {
+  const {colors} = useTheme();
   const textStyle = useMemo(
-    () =>
-      StyleSheet.flatten([
-        styles.listItemText,
-        {color: colorScheme === 'dark' ? 'white' : 'black'},
-      ]),
-    [colorScheme],
+    () => StyleSheet.flatten([styles.listItemText, {color: colors.text}]),
+    [colors],
   );
   const renderItem = useCallback<ListRenderItem<(typeof cities)[number]>>(
     ({item}) => (
       <TouchableOpacity
         onPress={() => {
-          Alert.alert(`${item} pressed`);
+          navigation.navigate('City', {city: item});
         }}
         accessibilityRole="button"
         style={styles.listItem}>
         <Text style={textStyle}>{item}</Text>
       </TouchableOpacity>
     ),
-    [textStyle],
+    [navigation, textStyle],
   );
 
   return (
