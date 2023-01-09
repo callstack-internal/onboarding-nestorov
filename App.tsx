@@ -79,8 +79,12 @@ const App = () => {
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
           <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
+            <Text>Edit </Text>
+            <Text style={styles.highlight}>App.tsx</Text>
+            <Text>
+              {' '}
+              to change this screen and then come back to see your edits.
+            </Text>
           </Section>
           <Section title="See Your Changes">
             <ReloadInstructions />
@@ -89,7 +93,7 @@ const App = () => {
             <DebugInstructions />
           </Section>
           <Section title="Learn More">
-            Read the docs to discover what to do next:
+            <Text>Read the docs to discover what to do next:</Text>
           </Section>
           <LearnMoreLinks />
         </View>
