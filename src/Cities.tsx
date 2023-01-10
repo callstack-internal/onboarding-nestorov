@@ -26,7 +26,7 @@ export default function Cities({navigation}: StackScreenProps<'Cities'>) {
     ({item}) => (
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate('City', {city: item.id, name: item.name});
+          navigation.navigate('City', {id: item.id, name: item.name});
         }}
         accessibilityRole="button"
         style={listItemStyle}>

@@ -26,8 +26,10 @@ export interface Weather {
   pressure: number;
 }
 
+type SomeError = unknown;
+
 interface State {
-  error: unknown | null;
+  error: SomeError | null;
   weather: Weather[] | null;
 }
 
@@ -44,6 +46,23 @@ export function useWeatherContext() {
   }
 
   return value;
+}
+
+export function useWeatherForCity(
+  id: number,
+): [SomeError | null, Weather | null] {
+  const {error, weather} = useWeatherContext();
+
+  if (error || !weather) {
+    return [error, null];
+  }
+
+  const value = weather.find(item => item.id === id);
+  if (!value) {
+    throw new Error('Weather for this id has not been requested');
+  }
+
+  return [error, value];
 }
 
 interface Response {
