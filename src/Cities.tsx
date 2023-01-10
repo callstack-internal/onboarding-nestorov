@@ -1,5 +1,5 @@
 import {useTheme} from '@react-navigation/native';
-import React, {useCallback, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 import {
   FlatList,
   Text,
@@ -8,67 +8,55 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
+import Summary from './Summary';
 import {StackScreenProps} from './types';
-
-const cities = [
-  'London',
-  'Berlin',
-  'Madrid',
-  'Rome',
-  'Bucharest',
-  'Paris',
-  'Vienna',
-  'Warsaw',
-  'Budapest',
-  'Sofia',
-  'Tokyo',
-  'Delhi',
-  'Beijing',
-  'Seoul',
-  'New York',
-  'Sydney',
-  'Los Angeles',
-  'Istanbul',
-  'Houston',
-  'Vancouver',
-];
+import {useWeatherContext, Weather} from './WeatherContext';
 
 export default function Cities({navigation}: StackScreenProps<'Cities'>) {
   const {colors} = useTheme();
-  const textStyle = useMemo(
-    () => StyleSheet.flatten([styles.listItemText, {color: colors.text}]),
+  const {loadWeather, weather, error} = useWeatherContext();
+  useEffect(() => {
+    loadWeather();
+  }, [loadWeather]);
+  const listItemStyle = useMemo(
+    () => StyleSheet.flatten([styles.listItem, {borderColor: colors.border}]),
     [colors],
   );
-  const renderItem = useCallback<ListRenderItem<(typeof cities)[number]>>(
+  const renderItem = useCallback<ListRenderItem<Weather>>(
     ({item}) => (
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate('City', {city: item});
+          navigation.navigate('City', {id: item.id, name: item.name});
         }}
         accessibilityRole="button"
-        style={styles.listItem}>
-        <Text style={textStyle}>{item}</Text>
+        style={listItemStyle}>
+        <Summary item={item} />
       </TouchableOpacity>
     ),
-    [navigation, textStyle],
+    [navigation, listItemStyle],
   );
+
+  if (error) {
+    return <Text style={{color: colors.text}}>An error occurred</Text>;
+  }
+
+  if (!weather) {
+    return <Text style={{color: colors.text}}>Loading...</Text>;
+  }
 
   return (
     <FlatList
-      data={cities}
+      data={weather}
       keyExtractor={keyExtractor}
       renderItem={renderItem}
     />
   );
 }
-type KeyExtractor = Exclude<FlatListProps<string>['keyExtractor'], undefined>;
-const keyExtractor: KeyExtractor = item => item;
+type KeyExtractor = Exclude<FlatListProps<Weather>['keyExtractor'], undefined>;
+const keyExtractor: KeyExtractor = item => item.id.toString();
 
 const styles = StyleSheet.create({
   listItem: {
-    padding: 10,
-  },
-  listItemText: {
-    fontSize: 18,
+    borderBottomWidth: 1,
   },
 });
