@@ -17,6 +17,13 @@ import {
 export interface Weather {
   id: number;
   name: string;
+  icon: string;
+  condition: string;
+  temperature: number;
+  clouds: number;
+  windSpeed: number;
+  humidity: number;
+  pressure: number;
 }
 
 interface State {
@@ -43,6 +50,24 @@ interface Response {
   list: {
     id: number;
     name: string;
+    weather: [
+      {
+        icon: string;
+        main: string;
+      },
+    ];
+    main: {
+      temp: number;
+      humidity: number;
+      pressure: number;
+    };
+    wind: {
+      speed: number;
+      deg: number;
+    };
+    clouds: {
+      all: number;
+    };
   }[];
 }
 
@@ -50,14 +75,24 @@ async function fetchWeatherForAllCities(): Promise<Weather[]> {
   const url = `${API_BASE_URL}${API_WEATHER_PATH}?id=${CITIES_LIST.join()}&appid=${API_KEY}&units=metric`;
   const response = await fetch(url);
   const data = (await response.json()) as Response;
-  console.log(JSON.stringify(data));
   return data.list.map(
     ({
       id,
       name,
+      weather: [{main: condition, icon}],
+      main: {temp: temperature, humidity, pressure},
+      clouds: {all: clouds},
+      wind: {speed: windSpeed},
     }) => ({
       id,
       name,
+      icon,
+      condition,
+      temperature,
+      humidity,
+      pressure,
+      clouds,
+      windSpeed,
     }),
   );
 }

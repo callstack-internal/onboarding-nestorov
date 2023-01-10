@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
+import Summary from './Summary';
 import {StackScreenProps} from './types';
 import {useWeatherContext, Weather} from './WeatherContext';
 
@@ -17,8 +18,8 @@ export default function Cities({navigation}: StackScreenProps<'Cities'>) {
   useEffect(() => {
     loadWeather();
   }, [loadWeather]);
-  const textStyle = useMemo(
-    () => StyleSheet.flatten([styles.listItemText, {color: colors.text}]),
+  const listItemStyle = useMemo(
+    () => StyleSheet.flatten([styles.listItem, {borderColor: colors.border}]),
     [colors],
   );
   const renderItem = useCallback<ListRenderItem<Weather>>(
@@ -28,16 +29,20 @@ export default function Cities({navigation}: StackScreenProps<'Cities'>) {
           navigation.navigate('City', {city: item.id, name: item.name});
         }}
         accessibilityRole="button"
-        style={styles.listItem}>
-        <Text style={textStyle}>{item.name}</Text>
+        style={listItemStyle}>
+        <Summary item={item} />
       </TouchableOpacity>
     ),
-    [navigation, textStyle],
+    [navigation, listItemStyle],
   );
 
-  if (error) return <Text style={textStyle}>An error occurred</Text>;
+  if (error) {
+    return <Text style={{color: colors.text}}>An error occurred</Text>;
+  }
 
-  if (!weather) return <Text style={textStyle}>Loading...</Text>;
+  if (!weather) {
+    return <Text style={{color: colors.text}}>Loading...</Text>;
+  }
 
   return (
     <FlatList
@@ -52,9 +57,6 @@ const keyExtractor: KeyExtractor = item => item.id.toString();
 
 const styles = StyleSheet.create({
   listItem: {
-    padding: 10,
-  },
-  listItemText: {
-    fontSize: 18,
+    borderBottomWidth: 1,
   },
 });
