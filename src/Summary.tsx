@@ -1,13 +1,26 @@
 import {useTheme} from '@react-navigation/native';
 import React from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {
+  Image,
+  StyleProp,
+  StyleSheet,
+  Text,
+  View,
+  ViewStyle,
+} from 'react-native';
 import {colors, ICON_CDN_BASE_URL} from './constants';
 import {Weather} from './WeatherContext';
 
-export default function Summary({item}: {item: Weather}) {
+export default function Summary({
+  item,
+  style,
+}: {
+  item: Weather;
+  style?: StyleProp<ViewStyle>;
+}) {
   const theme = useTheme();
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style]}>
       <Image
         source={{uri: `${ICON_CDN_BASE_URL}${item.icon}@2x.png`}}
         style={styles.image}
