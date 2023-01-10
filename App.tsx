@@ -7,9 +7,9 @@ import {
 } from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-import Cities from './Cities';
-import City from './City';
-import {StackParamList} from './types';
+import Cities from './src/Cities';
+import City from './src/City';
+import {StackParamList} from './src/types';
 
 const Stack = createNativeStackNavigator<StackParamList>();
 
