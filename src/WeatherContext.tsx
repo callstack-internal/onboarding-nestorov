@@ -141,3 +141,8 @@ export function WeatherContextProvider({children}: {children: ReactNode}) {
   const value = useMemo(() => ({...state, loadWeather}), [state, loadWeather]);
   return <context.Provider value={value}>{children}</context.Provider>;
 }
+
+const __testing =
+  process.env.NODE_ENV === 'test' ? {fetchWeatherForAllCities} : undefined;
+
+export {__testing};
