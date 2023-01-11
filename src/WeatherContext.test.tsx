@@ -1,5 +1,5 @@
 import 'react-native';
-import {__testing} from '../src/WeatherContext';
+import {__testing} from './WeatherContext';
 
 const {fetchWeatherForAllCities} = __testing!;
 
