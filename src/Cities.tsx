@@ -41,7 +41,11 @@ export default function Cities({navigation}: StackScreenProps<'Cities'>) {
   }
 
   if (!weather) {
-    return <Text style={{color: colors.text}}>Loading...</Text>;
+    return (
+      <Text testID="loading" style={{color: colors.text}}>
+        Loading...
+      </Text>
+    );
   }
 
   return (
