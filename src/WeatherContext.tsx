@@ -34,7 +34,7 @@ interface State {
 }
 
 interface Context extends State {
-  loadWeather(): void;
+  loadWeather(refresh?: boolean): Promise<any>;
 }
 
 const context = createContext<Context | null>(null);
@@ -123,8 +123,8 @@ export function WeatherContextProvider({children}: {children: ReactNode}) {
   });
 
   const hasStartedFetchingRef = useRef(false);
-  const loadWeather = useCallback<() => void>(async () => {
-    if (hasStartedFetchingRef.current) {
+  const loadWeather = useCallback(async (refresh = false) => {
+    if (!refresh && hasStartedFetchingRef.current) {
       return;
     }
 

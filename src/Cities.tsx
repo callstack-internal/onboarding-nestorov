@@ -1,5 +1,5 @@
 import {useTheme} from '@react-navigation/native';
-import React, {useCallback, useEffect, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {
   FlatList,
   Text,
@@ -14,10 +14,14 @@ import {useWeatherContext, Weather} from './WeatherContext';
 
 export default function Cities({navigation}: StackScreenProps<'Cities'>) {
   const {colors} = useTheme();
+
   const {loadWeather, weather, error} = useWeatherContext();
   useEffect(() => {
     loadWeather();
   }, [loadWeather]);
+
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
   const listItemStyle = useMemo(
     () => StyleSheet.flatten([styles.listItem, {borderColor: colors.border}]),
     [colors],
@@ -49,6 +53,12 @@ export default function Cities({navigation}: StackScreenProps<'Cities'>) {
       data={weather}
       keyExtractor={keyExtractor}
       renderItem={renderItem}
+      refreshing={isRefreshing}
+      onRefresh={async () => {
+        setIsRefreshing(true);
+        await loadWeather(true);
+        setIsRefreshing(false);
+      }}
     />
   );
 }
