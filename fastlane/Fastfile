@@ -1,0 +1,13 @@
+platform :ios do
+    lane :build do
+        gym(
+            skip_package_ipa: true,
+            destination: 'generic/platform=iOS Simulator',
+            configuration: 'Release',
+            scheme: 'WeatherApp',
+            archive_path: './ios/output',
+            workspace: './ios/WeatherApp.xcworkspace',
+            xcargs: '-UseModernBuildSystem=YES',
+        )
+    end
+end

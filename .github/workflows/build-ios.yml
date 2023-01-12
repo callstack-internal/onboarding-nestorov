@@ -1,0 +1,54 @@
+name: Build iOS Simulator app
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: macos-12
+    name: Test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js and Yarn
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: CocoaPods cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ios/Pods
+            ~/Library/Caches/CocoaPods
+            ~/.cocoapods
+          key: ${{ runner.os }}-pods-${{ hashFiles('ios/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-
+
+      - name: Configure CocoaPods
+        run: yarn pod-install
+
+      - name: Install fastlane
+        run: brew install fastlane
+
+      - name: Build
+        run: fastlane ios build
+
+      - name: Upload app
+        uses: actions/upload-artifact@v3
+        with:
+          name: WeatherApp.app
+          path: ios/output.xcarchive/Products/Applications/WeatherApp.app
+#
+# To run in simulator:
+#   spctl --add ~/Downloads/WeatherApp.app
+#   xcrun simctl install booted ~/Downloads/WeatherApp.app
