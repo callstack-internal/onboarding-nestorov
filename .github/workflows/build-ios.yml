@@ -7,9 +7,9 @@ on:
     branches: [main]
 
 jobs:
-  test:
+  build:
     runs-on: macos-12
-    name: Test
+    name: Build iOS Simulator app
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -41,13 +41,14 @@ jobs:
         run: brew install fastlane
 
       - name: Build
-        run: fastlane ios build
+        run: fastlane ios build && mv ios/output.xcarchive/Products/Applications/ WeatherApp
 
       - name: Upload app
         uses: actions/upload-artifact@v3
         with:
-          name: WeatherApp.app
-          path: ios/output.xcarchive/Products/Applications/WeatherApp.app
+          name: WeatherApp
+          path: WeatherApp
+          if-no-files-found: error
 #
 # To run in simulator:
 #   spctl --add ~/Downloads/WeatherApp.app

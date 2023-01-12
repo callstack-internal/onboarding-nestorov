@@ -16,10 +16,10 @@ yarn detox.build.android
 yarn detox.test.android -n "Pixel_4_API_33"
 ```
 
-To get all the names of your emulators:
+To get all the names of your running emulators:
 
 ```sh
-adb devices | tail -n +2 | cut -sf -1 | xargs -n 1 -I {} bash -c "if [[ '{}' =~ ^emulator--* ]]; then adb -s {} emu avd name | head -n 1; fi"
+adb devices | grep emulator | cut -f1 | while read line; do adb -s $line emu avd name | head -n 1; done
 ```
 
 ### Android device
