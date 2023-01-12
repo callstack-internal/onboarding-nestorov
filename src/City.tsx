@@ -1,8 +1,9 @@
 import {useTheme} from '@react-navigation/native';
 import React, {useMemo} from 'react';
-import {Alert, StyleSheet, Text, View} from 'react-native';
+import {Alert, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {colors} from './constants';
 import NativeButton from './NativeButton';
+import {showNotification} from './NativeNotification';
 import Summary from './Summary';
 import {StackScreenProps} from './types';
 import {useWeatherForCity} from './WeatherContext';
@@ -51,7 +52,6 @@ export default function City({route}: StackScreenProps<'City'>) {
       <View style={computedStyles.textContainer}>
         <Text style={computedStyles.text}>Cloud Cover: {weather.clouds}%</Text>
       </View>
-
       <NativeButton
         title="This title is a prop"
         onTouchUpInside={() => {
@@ -61,6 +61,19 @@ export default function City({route}: StackScreenProps<'City'>) {
         }}
         style={styles.nativeButton}
       />
+      <TouchableOpacity
+        onPress={() => {
+          showNotification(
+            'Random number',
+            `Your random number is ${Math.random()}`,
+          );
+        }}
+        style={styles.notificationButton}
+        accessibilityLabel="button">
+        <Text style={styles.notificationButtonText}>
+          Display a random number
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -84,5 +97,19 @@ const styles = StyleSheet.create({
     backgroundColor: colors.blue,
     marginVertical: 10,
     borderRadius: 6,
+  },
+  notificationButton: {
+    width: 250,
+    height: 50,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.red,
+    marginVertical: 10,
+    borderRadius: 6,
+  },
+  notificationButtonText: {
+    fontSize: 18,
+    textAlign: 'center',
+    color: colors.white,
   },
 });

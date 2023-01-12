@@ -5,8 +5,8 @@ import androidx.appcompat.widget.AppCompatButton
 import com.facebook.react.bridge.ReactContext
 import com.facebook.react.uimanager.events.RCTEventEmitter
 
-class NativeButtonView : AppCompatButton {
-    constructor(context: Context) : super(context) {
+class NativeButtonView(context: Context) : AppCompatButton(context) {
+    init {
         setOnClickListener {
             (context as ReactContext)
                     .getJSModule(RCTEventEmitter::class.java)

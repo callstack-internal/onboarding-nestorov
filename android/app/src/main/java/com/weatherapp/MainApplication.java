@@ -12,7 +12,6 @@ import com.facebook.soloader.SoLoader;
 import com.weatherapp.newarchitecture.MainApplicationReactNativeHost;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-import com.weatherapp.NativeButtonPackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -28,6 +27,7 @@ public class MainApplication extends Application implements ReactApplication {
           @SuppressWarnings("UnnecessaryLocalVariable")
           List<ReactPackage> packages = new PackageList(this).getPackages();
           packages.add(new NativeButtonPackage());
+          packages.add(new NativeNotificationPackage());
           return packages;
         }
 

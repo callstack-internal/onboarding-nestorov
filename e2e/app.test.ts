@@ -2,7 +2,7 @@ import {expect, device} from 'detox';
 
 describe('Example', () => {
   beforeAll(async () => {
-    await device.launchApp();
+    await device.launchApp({permissions: {notifications: 'YES'}});
   });
 
   beforeEach(async () => {
