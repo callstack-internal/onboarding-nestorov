@@ -29,10 +29,12 @@ export default function City({route}: StackScreenProps<'City'>) {
   }
 
   return (
-    <View>
+    <View testID="city">
       <Summary item={weather} style={computedStyles.summaryContainer} />
       <View style={computedStyles.textContainer}>
-        <Text style={computedStyles.text}>Humidity: {weather.humidity}%</Text>
+        <Text style={computedStyles.text} testID="humidity">
+          Humidity: {weather.humidity}%
+        </Text>
       </View>
       <View style={computedStyles.textContainer}>
         <Text style={computedStyles.text}>
