@@ -1,6 +1,8 @@
 import {useTheme} from '@react-navigation/native';
 import React, {useMemo} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Alert, StyleSheet, Text, View} from 'react-native';
+import {colors} from './constants';
+import NativeButton from './NativeButton';
 import Summary from './Summary';
 import {StackScreenProps} from './types';
 import {useWeatherForCity} from './WeatherContext';
@@ -29,10 +31,12 @@ export default function City({route}: StackScreenProps<'City'>) {
   }
 
   return (
-    <View>
+    <View testID="city">
       <Summary item={weather} style={computedStyles.summaryContainer} />
       <View style={computedStyles.textContainer}>
-        <Text style={computedStyles.text}>Humidity: {weather.humidity}%</Text>
+        <Text style={computedStyles.text} testID="humidity">
+          Humidity: {weather.humidity}%
+        </Text>
       </View>
       <View style={computedStyles.textContainer}>
         <Text style={computedStyles.text}>
@@ -47,6 +51,16 @@ export default function City({route}: StackScreenProps<'City'>) {
       <View style={computedStyles.textContainer}>
         <Text style={computedStyles.text}>Cloud Cover: {weather.clouds}%</Text>
       </View>
+
+      <NativeButton
+        title="This title is a prop"
+        onTouchUpInside={() => {
+          Alert.alert(
+            'The native button was tapped. This alert is created by the JavaScript thread.',
+          );
+        }}
+        style={styles.nativeButton}
+      />
     </View>
   );
 }
@@ -62,5 +76,13 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 20,
+  },
+  nativeButton: {
+    width: 250,
+    height: 50,
+    alignSelf: 'center',
+    backgroundColor: colors.blue,
+    marginVertical: 10,
+    borderRadius: 6,
   },
 });
