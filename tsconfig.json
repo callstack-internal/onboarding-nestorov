@@ -1,6 +1,6 @@
 {
   "extends": "@tsconfig/react-native/tsconfig.json",
   "compilerOptions": {
-    "types": ["react-native", "jest", "@testing-library/jest-native", "detox", "types.d.ts"],
+    "types": ["react-native", "jest", "@testing-library/jest-native", "detox", "./types"],
   }
 }

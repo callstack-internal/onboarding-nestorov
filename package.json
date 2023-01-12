@@ -12,6 +12,7 @@
     "detox.test.android": "detox test --configuration android.emu.debug",
     "detox.build.android.device": "detox build --configuration android.att.debug",
     "detox.test.android.device": "detox test --configuration android.att.debug",
+    "typescript": "yarn tsc --noEmit",
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
