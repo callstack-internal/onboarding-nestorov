@@ -1,0 +1,40 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    name: Build Android APK
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js and Yarn
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '11'
+
+      - name: Build release APK
+        run: cd android && ./gradlew assembleRelease && mv app/build/outputs/apk/release/app-release.apk WeatherApp.apk
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: WeatherApp.apk
+          path: android/WeatherApp.apk
+          if-no-files-found: error
