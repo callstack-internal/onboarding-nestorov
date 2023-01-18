@@ -7,6 +7,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import z from 'zod';
 import {
   API_BASE_URL,
   API_KEY,
@@ -65,35 +66,37 @@ export function useWeatherForCity(
   return [error, value];
 }
 
-interface Response {
-  list: {
-    id: number;
-    name: string;
-    weather: [
-      {
-        icon: string;
-        main: string;
-      },
-    ];
-    main: {
-      temp: number;
-      humidity: number;
-      pressure: number;
-    };
-    wind: {
-      speed: number;
-      deg: number;
-    };
-    clouds: {
-      all: number;
-    };
-  }[];
-}
+const responseSchema = z.object({
+  list: z.array(
+    z.object({
+      id: z.number(),
+      name: z.string(),
+      weather: z.array(
+        z.object({
+          icon: z.string(),
+          main: z.string(),
+        }),
+      ),
+      main: z.object({
+        temp: z.number(),
+        humidity: z.number(),
+        pressure: z.number(),
+      }),
+      wind: z.object({
+        speed: z.number(),
+        deg: z.number(),
+      }),
+      clouds: z.object({
+        all: z.number(),
+      }),
+    }),
+  ),
+});
 
 async function fetchWeatherForAllCities(): Promise<Weather[]> {
   const url = `${API_BASE_URL}${API_WEATHER_PATH}?id=${CITIES_LIST.join()}&appid=${API_KEY}&units=metric`;
   const response = await fetch(url);
-  const data = (await response.json()) as Response;
+  const data = responseSchema.parse(await response.json());
   return data.list.map(
     ({
       id,
