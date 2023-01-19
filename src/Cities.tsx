@@ -37,11 +37,16 @@ export default function Cities({navigation}: StackScreenProps<'Cities'>) {
   );
 
   if (error) {
+    console.error(error);
     return <Text style={{color: colors.text}}>An error occurred</Text>;
   }
 
   if (!weather) {
-    return <Text style={{color: colors.text}}>Loading...</Text>;
+    return (
+      <Text testID="loading" style={{color: colors.text}}>
+        Loading...
+      </Text>
+    );
   }
 
   return (
@@ -52,7 +57,7 @@ export default function Cities({navigation}: StackScreenProps<'Cities'>) {
     />
   );
 }
-type KeyExtractor = Exclude<FlatListProps<Weather>['keyExtractor'], undefined>;
+type KeyExtractor = NonNullable<FlatListProps<Weather>['keyExtractor']>;
 const keyExtractor: KeyExtractor = item => item.id.toString();
 
 const styles = StyleSheet.create({
