@@ -13,7 +13,7 @@
     "detox.build.android.device": "detox build --configuration android.att.debug",
     "detox.test.android.device": "detox test --configuration android.att.debug",
     "typescript": "yarn tsc --noEmit",
-    "test": "concurrently --kill-others -n mountebank,jest -s command-jest -c \"bgBlue.bold,bgMagenta.bold\" \"mb start --configfile mountebank.json\" \"wait-on http://localhost:3000 && jest\"",
+    "test": "concurrently --kill-others -n mountebank,jest -s command-jest -c \"bgBlue.bold,bgMagenta.bold\" \"mb start --configfile mountebank.json\" \"wait-on http://localhost:3000 && jest --coverage --coverageReporters json-summary\"",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {

@@ -8,6 +8,8 @@ on:
 
 jobs:
   test:
+    permissions:
+      pull-requests: write
     runs-on: ubuntu-latest
     name: Test
     steps:
@@ -25,3 +27,9 @@ jobs:
 
       - name: Run tests
         run: yarn test
+
+      - name: Post coverage on PR
+        if: github.event_name == 'pull_request'
+        uses: MishaKav/jest-coverage-comment@main
+        with:
+          badge-title: coverage

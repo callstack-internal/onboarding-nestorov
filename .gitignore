@@ -65,3 +65,5 @@ buck-out/
 
 # mountebank
 *.log
+
+/coverage/
